@@ -4,17 +4,21 @@ import Container from "@/components/main/Container"
 
 export default function Home() {
   return (
-    <>
-      <Container mt={16}>
-        <HStack justifyContent="space-between" mb={12} pr={6}>
+    <Box w="100%" overflowY="hidden">
+      <Container mt={16} overflowY="hidden">
+        <HStack
+          justifyContent="space-between"
+          mb={12}
+          p={{ base: "0 1.5rem", lg: "0 1.5rem 0 0" }}
+        >
           <Heading size="md" color="gray.600">
             رزروها
           </Heading>
           <Button p={6}>ثبت رزرو جدید</Button>
         </HStack>
-        <ReservesSection />
       </Container>
-    </>
+      <ReservesSection />
+    </Box>
   )
 }
 
@@ -143,9 +147,9 @@ import AbsoluteExtrasOverlay from "@/components/common/AbsoluteExtrasOverlay"
 const ReservesSection = () => {
   return (
     <>
-      <Container>
+      <Container overflowY="auto" minW="918px">
         <ReserveHeaders />
-        <VStack w="full">
+        <VStack w="full" px={{ base: 6, lg: 0 }}>
           <VStack w="full" position="relative">
             <ReserveItem />
             <ReserveItem />

@@ -5,6 +5,7 @@ import { useState } from "react"
 import { setCookie } from "cookies-next"
 import NextImage from "next/image"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
 import {
   Box,
   Grid,
@@ -42,6 +43,7 @@ export default function () {
   const [showSecondPassword, setShowSecondPassword] = useState("")
 
   const toast = useToast()
+  const router = useRouter()
 
   const onSubmit = async e => {
     e.preventDefault()
@@ -94,10 +96,14 @@ export default function () {
             >
               {/* <NextImage src={loginImage} width="100%" height="100%" /> */}
             </Box>
-            <Grid placeItems="center" bg="purple.300" borderRadius="12px 0 0 12px">
+            <Grid
+              placeItems="center"
+              bg="purple.300"
+              borderRadius={{ base: 12, lg: "12px 0 0 12px" }}
+            >
               <Card p={16} shadow="none">
                 <form style={{ width: "360px" }} onSubmit={onSubmit}>
-                  <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                  <Grid templateColumns={{ base: "100%", lg: "repeat(2, 1fr)" }} gap={2}>
                     <FormControl isRequired mb={4}>
                       <FormLabel fontSize="md">نام</FormLabel>
                       <Input
@@ -132,7 +138,7 @@ export default function () {
                     />
                     {!isError && <FormErrorMessage>ایمیل وارد نشده است</FormErrorMessage>}
                   </FormControl>
-                  <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                  <Grid templateColumns={{ base: "100%", lg: "repeat(2, 1fr)" }} gap={2}>
                     {/* Password */}
                     <FormControl isRequired mb={4}>
                       <FormLabel fontSize="md">رمز ورود</FormLabel>
@@ -168,7 +174,7 @@ export default function () {
                           <IconButton
                             size="sm"
                             variant="ghost"
-                            onClick={() => setShowSecondPassword(!showPassword)}
+                            onClick={() => setShowSecondPassword(!showSecondPassword)}
                             icon={showPassword ? <CiRead /> : <CiUnread />}
                             colorScheme="purple"
                           />
