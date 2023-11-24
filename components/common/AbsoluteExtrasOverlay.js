@@ -13,6 +13,7 @@ const AbsoluteExtrasOverlay = () => {
         background-position="bottom"
         position={"absolute"}
         bottom="0"
+        zIndex={999}
       />
     </>
   )

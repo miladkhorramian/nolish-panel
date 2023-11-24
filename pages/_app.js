@@ -1,5 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react"
-import theme from "@/assets/theme"
+import theme from "@/app/theme"
 import { Fonts } from "@/public/globals"
 import { useRouter } from "next/router"
 import { store } from "@/app/store"
@@ -11,13 +11,16 @@ import "@/styles/globals.css"
 import { Box } from "@chakra-ui/react"
 
 import Navbar from "@/components/common/Navbar"
+import { useEffect } from "react"
 
 const specialRoutes = ["/user/login", "/user/register"]
 
 export default function App({ Component, pageProps }) {
-  const router = useRouter()
   const { pathname, push } = useRouter()
-  if (!getCookie("token")) router.push("/auth/login")
+
+  useEffect(() => {
+    if (!getCookie("token")) push("/user/login")
+  }, [])
 
   if (specialRoutes.includes(pathname))
     return (

@@ -1,3 +1,5 @@
+import { NextLink } from "next/link"
+import { useRef, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import {
   Avatar,
@@ -10,54 +12,48 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Icon,
+  VStack,
+  Link as ChakraLink,
 } from "@chakra-ui/react"
-import { toggleMenu } from "@/features/user/userSlice"
-import { ChevronDownIcon } from "@chakra-ui/icons"
+import { toggleMenu, closeMenu, getUserData } from "@/features/user/userSlice"
+import { CiLogout, CiUser, CiViewList } from "react-icons/ci"
+
+import { isObjEmpty } from "@/assets/validations"
 
 const UserMenu = ({ menuOpen, menuToggle, menuIsOpen, menuClose }) => {
   const { isOpen, onToggle } = useDisclosure()
-  const { show } = useSelector(state => state.user)
+  const { show, data } = useSelector(state => state.user)
 
-  console.log(show)
+  const menuRef = useRef(null)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        if (!event.target.classList.contains("user-menu")) {
+          dispatch(closeMenu())
+        }
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [menuRef])
+
+  useEffect(() => {
+    if (isObjEmpty(data)) {
+      dispatch(getUserData())
+    }
+  }, [])
 
   return (
     <>
-      <Menu
-        position="relative"
-        // onOpen={menuOpen}
-        // isOpen={menuIsOpen}
-        // menuClose={menuClose}
-        closeOnBlur={true}
-      >
-        <MenuButton
-          bg="transparent"
-          _hover={{ background: "transparent" }}
-          color="white"
-          // onClick={menuIsOpen ? menuClose : menuOpen}
-        >
-          <HStack>
-            <Text>الی شافعی</Text>
-            <Avatar src="" name="الی شافعی" />
-          </HStack>
-        </MenuButton>
-        <MenuList
-          color="gray.800"
-          // borderRadius="0 0 12px 12px"
-          borderRadius={12}
-          shadow="md"
-          position="absolute"
-          right="-5.25rem"
-          top=".5rem"
-        >
-          <MenuItem closeOnSelect={true}>Download</MenuItem>
-          <MenuItem closeOnSelect={true}>Create a Copy</MenuItem>
-          <MenuItem closeOnSelect={true}>Mark as Draft</MenuItem>
-          <MenuItem closeOnSelect={true}>Delete</MenuItem>
-          <MenuItem closeOnSelect={true}>Attend a Workshop</MenuItem>
-        </MenuList>
-      </Menu>
-      {/* <HStack
+      <HStack
+        ref={menuRef}
         as={Button}
         variant="ghost"
         _hover={{ background: "transparent" }}
@@ -65,25 +61,58 @@ const UserMenu = ({ menuOpen, menuToggle, menuIsOpen, menuClose }) => {
         onClick={() => dispatch(toggleMenu())}
         position="relative"
       >
-        <Text>الی شفیعی</Text>
-        <Avatar src="" name="الی شفیعی" />
+        <Text>{data?.first_name}</Text>
+        <Avatar src={data?.avatar} name={data?.first_name + " " + data?.last_name} />
       </HStack>
-      <Box
-        bg="white"
-        position="absolute"
-        top="4.5rem"
-        p={4}
-        borderRadius="0 0 12px 12px"
-        left="0"
-        minW="200px"
-        display={show ? "block" : "none"}
-        color="gray.800"
-        shadow="md"
-        opacity={show ? 1 : 0}
-        transition="all .3s ease-in"
-      >
-        klasjkjad
-      </Box> */}
+      {show ? (
+        <Box
+          bg="white"
+          position="absolute"
+          top="4.5rem"
+          borderRadius="0 0 12px 12px"
+          left="0"
+          minW="160px"
+          display={show ? "block" : "none"}
+          color="gray.800"
+          shadow="md"
+          opacity={show ? 1 : 0}
+          transition="all .3s ease-in"
+          zIndex={999}
+        >
+          <VStack alignItems="flex-start" spacing={0}>
+            <ChakraLink
+              as={NextLink}
+              href="/user/profile"
+              p={2}
+              _hover={{ textDecoration: "none" }}
+              className="user-menu"
+            >
+              <Icon as={CiUser} ml={2} mb={-1} />
+              پروفایل
+            </ChakraLink>
+            <ChakraLink
+              as={NextLink}
+              href="/reserves"
+              p={2}
+              _hover={{ textDecoration: "none" }}
+              className="user-menu"
+            >
+              <Icon as={CiViewList} ml={2} mb={-1} />
+              رزروها
+            </ChakraLink>
+            <Button
+              leftIcon={<CiLogout mt={2} />}
+              w="full"
+              px={4}
+              py={2}
+              borderRadius="0 0 12px 12px"
+              className="user-menu"
+            >
+              خروج
+            </Button>
+          </VStack>
+        </Box>
+      ) : null}
     </>
   )
 }

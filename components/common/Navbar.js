@@ -45,11 +45,11 @@ const Navbar = () => {
   const router = useRouter()
 
   return (
-    <>
+    <Box px={{ base: 0, lg: "5vw", xl: "10vw" }}>
       <HStack
         as={Card}
-        w={{ base: "full", lg: "90vw", xl: "80vw" }}
-        mx={{ base: "0", md: "auto" }}
+        // w={{ base: "full", lg: "90vw", xl: "80vw" }}
+        // mx={{ base: "0", md: "auto" }}
         bg="pink.600"
         p={4}
         my={{ base: 0, lg: 2 }}
@@ -70,10 +70,15 @@ const Navbar = () => {
             onClick={onToggle}
           />
           {/* Links */}
-          <ChakraLink as={NextLink} href="#" textDecoration="none" _hover={{ color: "pink.200" }}>
+          <ChakraLink as={NextLink} href="/" textDecoration="none" _hover={{ color: "pink.200" }}>
             خانه
           </ChakraLink>
-          <ChakraLink as={NextLink} href="#" textDecoration="none" _hover={{ color: "pink.200" }}>
+          <ChakraLink
+            as={NextLink}
+            href="/services"
+            textDecoration="none"
+            _hover={{ color: "pink.200" }}
+          >
             خدمات
           </ChakraLink>
           <ChakraLink as={NextLink} href="#" textDecoration="none" _hover={{ color: "pink.200" }}>
@@ -91,7 +96,7 @@ const Navbar = () => {
         />
       </HStack>
       <RightPanel isOpen={isOpen} />
-    </>
+    </Box>
   )
 }
 

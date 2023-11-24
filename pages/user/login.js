@@ -40,7 +40,10 @@ export default function () {
     const response = await axios.post("/auth/login", data)
 
     if (response.status === 200) {
-      setCookie("token", response.data.plainTextToken)
+      const expires = new Date()
+      expires.setDate(expires.getDate() + 30)
+
+      setCookie("token", response.data.plainTextToken, { expires })
       router.push("/")
     }
   }

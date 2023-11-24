@@ -5,6 +5,8 @@ const Container = props => (
     as={props.as}
     w={{ base: "full", lg: "90vw", xl: "80vw" }}
     mx={{ base: "0", md: "auto" }}
+    px={6}
+    overflowY="hidden"
     {...props}
   >
     {props.children}
