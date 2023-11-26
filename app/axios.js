@@ -13,7 +13,8 @@ export const axios = a.create({
 axios.interceptors.request.use(config => {
   const token = getCookie("token")
   if (token) config.headers.Authorization = `Bearer ${token}`
-  else window.location.replace("/user/login")
+  else if (!location.href.includes("register") && !location.href.includes("login"))
+    window.location.replace("/user/login")
 
   return config
 })

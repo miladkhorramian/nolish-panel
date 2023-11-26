@@ -4,8 +4,6 @@ import Container from "@/components/common/Container"
 import {
   AspectRatio,
   Avatar,
-  Image,
-  Card,
   Button,
   Input,
   FormControl,
@@ -15,8 +13,6 @@ import {
   VStack,
   Box,
   Heading,
-  Text,
-  IconButton,
   useToast,
 } from "@chakra-ui/react"
 import { CiEdit, CiCircleRemove, CiLock } from "react-icons/ci"

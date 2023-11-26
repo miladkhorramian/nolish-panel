@@ -13,14 +13,10 @@ import { Box } from "@chakra-ui/react"
 import Navbar from "@/components/common/Navbar"
 import { useEffect } from "react"
 
-const specialRoutes = ["/user/login", "/user/register"]
+const specialRoutes = ["/user/login", "/user/register", "/admin"]
 
 export default function App({ Component, pageProps }) {
   const { pathname, push } = useRouter()
-
-  useEffect(() => {
-    if (!getCookie("token")) push("/user/login")
-  }, [])
 
   if (specialRoutes.includes(pathname))
     return (

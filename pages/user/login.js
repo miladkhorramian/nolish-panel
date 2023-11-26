@@ -18,9 +18,9 @@ import {
 } from "@chakra-ui/react"
 
 import { axios } from "@/app/axios"
-import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons"
 import { CiUnread, CiRead } from "react-icons/ci"
 import loginImage from "@/public/images/login.jpg"
+import login from "@/utils/functions/login"
 
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default function () {
@@ -37,15 +37,7 @@ export default function () {
     e.preventDefault()
 
     const data = { email, password }
-    const response = await axios.post("/auth/login", data)
-
-    if (response.status === 200) {
-      const expires = new Date()
-      expires.setDate(expires.getDate() + 30)
-
-      setCookie("token", response.data.plainTextToken, { expires })
-      router.push("/")
-    }
+    login(data)
   }
 
   return (

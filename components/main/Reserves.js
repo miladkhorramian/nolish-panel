@@ -18,7 +18,7 @@ import { CiCircleChevDown } from "react-icons/ci"
 import Container from "../common/Container"
 import AbsoluteExtrasOverlay from "@/components/common/AbsoluteExtrasOverlay"
 
-import { replaceWithPersian } from "@/assets/replaceDigits"
+import { replaceWithPersian } from "@/utils/functions/replaceDigits"
 import { axios } from "@/app/axios"
 import { getReserves } from "@/features/reserve/reserveSlice"
 

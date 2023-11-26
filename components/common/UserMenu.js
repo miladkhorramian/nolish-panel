@@ -19,7 +19,7 @@ import {
 import { toggleMenu, closeMenu, getUserData } from "@/features/user/userSlice"
 import { CiLogout, CiUser, CiViewList } from "react-icons/ci"
 
-import { isObjEmpty } from "@/assets/validations"
+import isObjEmpty from "@/utils/validation/isObjEmpty.js"
 
 const UserMenu = ({ menuOpen, menuToggle, menuIsOpen, menuClose }) => {
   const { isOpen, onToggle } = useDisclosure()
