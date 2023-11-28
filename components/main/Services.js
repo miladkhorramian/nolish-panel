@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Card, Text, Heading, Button, IconButton, Box, Grid, HStack, Image } from "@chakra-ui/react"
+import { Card, Text, Heading, Box, HStack } from "@chakra-ui/react"
 import Container from "@/components/common/Container"
 
 const bgImg = "/images/samples/1.jpg"
@@ -10,7 +10,7 @@ export const ServiceItem = () => {
   return (
     <Card
       bg={`linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.4)), url("${bgImg}") center/cover no-repeat`}
-      w="300px"
+      w="full"
       h="250px"
       shadow="sm"
       //   borderRadius={12}

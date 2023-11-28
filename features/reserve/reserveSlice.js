@@ -27,7 +27,7 @@ export const getReserves = () => async dispatch => {
   try {
     const res = await axios.get("/reserve")
     if (res.status === 200) {
-      console.log(res)
+      // console.log(res)
       dispatch(setReserves(res.data.reserves))
     }
   } catch (error) {

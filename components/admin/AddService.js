@@ -13,10 +13,11 @@ import {
   Input,
   useDisclosure,
   HStack,
+  useToast,
 } from "@chakra-ui/react"
 import { axios } from "@/app/axios"
-import { addService } from "@/features/services/serviceSlice"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { setServices } from "@/features/admin/adminSlice"
 
 export const AddService = () => {
   const [name, setName] = useState("")
@@ -25,6 +26,8 @@ export const AddService = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useDispatch()
+  const toast = useToast()
+  const { services } = useSelector(state => state.admin)
 
   const handleSubmit = async event => {
     event.preventDefault()
@@ -36,13 +39,15 @@ export const AddService = () => {
     }
 
     try {
-      const response = await axios.post("/service", data)
-      if (response.status === 201) {
-        dispatch(addService(response.data.service))
-        onClose()
-      }
+      await axios.post("/service", data)
+      dispatch(setServices([...services, data]))
     } catch (error) {
-      console.error(error)
+      const { message, response } = error
+      console.error(response)
+      toast({
+        description: message,
+        status: "error",
+      })
     }
   }
 

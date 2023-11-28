@@ -6,15 +6,25 @@ export const axios = a.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    // Authorization: `Bearer ${getCookie("token")}`,
   },
 })
 
 axios.interceptors.request.use(config => {
   const token = getCookie("token")
-  if (token) config.headers.Authorization = `Bearer ${token}`
-  else if (!location.href.includes("register") && !location.href.includes("login"))
-    window.location.replace("/user/login")
+
+  if (token && !config.url.includes("login") && !config.url.includes("register"))
+    config.headers.Authorization = `Bearer ${token}`
 
   return config
 })
+
+// axios.interceptors.response.use(
+//   response => {
+//     return response
+//   },
+//   error => {
+//     if (error.response.status === 401) location.href = "/user/login"
+//     console.log(error)
+//     return Promise.reject(error)
+//   },
+// )

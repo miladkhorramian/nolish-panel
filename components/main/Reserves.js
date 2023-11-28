@@ -11,6 +11,7 @@ import {
   Text,
   Button,
   Box,
+  Center,
 } from "@chakra-ui/react"
 import { CiMenuKebab } from "react-icons/ci"
 import { CiCircleChevDown } from "react-icons/ci"
@@ -21,6 +22,7 @@ import AbsoluteExtrasOverlay from "@/components/common/AbsoluteExtrasOverlay"
 import { replaceWithPersian } from "@/utils/functions/replaceDigits"
 import { axios } from "@/app/axios"
 import { getReserves } from "@/features/reserve/reserveSlice"
+import { useRouter } from "next/router"
 
 const gridder = "20% 20% 20% 10% 10% 10% 9% 1%"
 const res = {
@@ -106,32 +108,32 @@ const ReserveItem = ({ data }) => {
         onMouseLeave={() => setShowExtraMenu(false)}
       >
         <GridItem as={Grid} placeItems="center start">
-          <Text fontSize="sm">{res.service.name}</Text>
+          <Text fontSize="sm">{data?.service?.name}</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">
-            {res.customer.first_name} {res.customer.last_name}
+            {data?.customer?.first_name} {data?.customer?.last_name}
           </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">ملیحه</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{new Date(res.reserved_at).toLocaleDateString("fa-ir")}</Text>
+          <Text fontSize="sm">{new Date(data?.reserved_at).toLocaleDateString("fa-ir")}</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">
-            {new Date(res.reserved_at).toLocaleTimeString("fa-ir", {
+            {new Date(data?.reserved_at).toLocaleTimeString("fa-ir", {
               hour: "2-digit",
               minute: "2-digit",
             })}
           </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{res.service.time_cost} دقیقه</Text>
+          <Text fontSize="sm">{data?.service?.time_cost} دقیقه</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{replaceWithPersian(res.service.money_cost)}</Text>
+          <Text fontSize="sm">{data?.service?.money_cost}</Text>
         </GridItem>
         <GridItem placeItems="center">
           <IconButton
@@ -151,6 +153,7 @@ const ReserveItem = ({ data }) => {
 
 const Reserves = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const { reserves } = useSelector(state => state.reserve)
 
   const [error, setError] = useState(false)
@@ -164,43 +167,26 @@ const Reserves = () => {
     <>
       <Container as={HStack} justifyContent="space-between" my={12} px={{ base: 6, lg: 0 }}>
         <Heading size="md" color="gray.600">
-          رزروها
+          رزروهای آخر شما
         </Heading>
-        <Button p={6}>ثبت رزرو جدید</Button>
       </Container>
-      <Container as={VStack} position="relative" w="auto" overflowX="auto">
+      <Container as={VStack} position="relative" w="auto" overflowX="auto" mb={4}>
         <VStack w="full">
           <ReserveHeaders />
-          <ReserveItem />
-          <ReserveItem />
-          <ReserveItem />
+          {reserves.map((reserve, index) => index <= 2 && <ReserveItem data={reserve} />)}
         </VStack>
         <AbsoluteExtrasOverlay />
       </Container>
-      {/* <IconButton
+      <Center maxW="700px" w="full" mx="auto" mb={8}>
+        <IconButton
           icon={<CiCircleChevDown />}
           variant="ghost"
           fontSize="24px"
           textAlign="center"
-        /> */}
-      {/* <Container overflowY="auto" minW="918px">
-        <Container mt={16} overflow="hidden"></Container>
-        
-        <VStack w="full" px={{ base: 6, lg: 0 }}>
-          <VStack w="full" position="relative">
-            <ReserveItem />
-            <ReserveItem />
-            <ReserveItem />
-            <AbsoluteExtrasOverlay />
-          </VStack>
-          <IconButton
-            icon={<CiCircleChevDown />}
-            variant="ghost"
-            fontSize="24px"
-            textAlign="center"
-          />
-        </VStack>
-      </Container> */}
+          mb={12}
+          onClick={() => router.push("/reserves")}
+        />
+      </Center>
     </>
   )
 }

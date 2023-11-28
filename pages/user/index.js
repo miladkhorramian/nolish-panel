@@ -1,13 +1,12 @@
+import { useEffect } from "react"
 import { useRouter } from "next/router"
 
-const User = () => {
+export default function User() {
   const router = useRouter()
 
-  React.useEffect(() => {
+  useEffect(() => {
     router.push("/user/profile")
   }, [])
 
   return null
 }
-
-export default User

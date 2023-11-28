@@ -1,5 +1,6 @@
 import { NextLink } from "next/link"
 import { useRef, useEffect } from "react"
+import { getCookie } from "cookies-next"
 import { useSelector, useDispatch } from "react-redux"
 import {
   Avatar,
@@ -8,17 +9,14 @@ import {
   Button,
   useDisclosure,
   Box,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Icon,
   VStack,
   Link as ChakraLink,
+  Flex,
 } from "@chakra-ui/react"
 import { toggleMenu, closeMenu, getUserData } from "@/features/user/userSlice"
 import { CiLogout, CiUser, CiViewList } from "react-icons/ci"
-
+import logout from "@/utils/functions/logout"
 import isObjEmpty from "@/utils/validation/isObjEmpty.js"
 
 const UserMenu = ({ menuOpen, menuToggle, menuIsOpen, menuClose }) => {
@@ -27,6 +25,8 @@ const UserMenu = ({ menuOpen, menuToggle, menuIsOpen, menuClose }) => {
 
   const menuRef = useRef(null)
   const dispatch = useDispatch()
+
+  const token = getCookie("token")
 
   useEffect(() => {
     const handleClickOutside = event => {
@@ -107,6 +107,7 @@ const UserMenu = ({ menuOpen, menuToggle, menuIsOpen, menuClose }) => {
               py={2}
               borderRadius="0 0 12px 12px"
               className="user-menu"
+              onClick={() => logout()}
             >
               خروج
             </Button>

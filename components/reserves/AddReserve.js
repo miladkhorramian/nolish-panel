@@ -1,34 +1,68 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { axios } from "@/app/axios"
 import {
-  Button,
-  FormControl,
-  FormLabel,
-  HStack,
-  Input,
   Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  FormControl,
+  FormLabel,
+  Button,
   useDisclosure,
+  Input,
 } from "@chakra-ui/react"
+import DatePicker from "react-datepicker2"
+import Select from "react-select"
+import { Calendar } from "react-datepicker2"
+
+import jalaali from "moment-jalaali"
 
 export const AddReserve = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [name, setName] = useState("")
-  const [clientName, setClientName] = useState("")
-  const [operatorName, setOperatorName] = useState("")
-  const [date, setDate] = useState("")
-  const [time, setTime] = useState("")
-  const [timeCost, setTimeCost] = useState("")
-  const [moneyCost, setMoneyCost] = useState("")
+  const date = new Date()
 
-  const handleSubmit = event => {
+  const [serviceWorkers, setServiceWorkers] = useState([])
+  const [services, setServices] = useState([])
+  const [selectedServiceWorker, setSelectedServiceWorker] = useState(null)
+  const [selectedService, setSelectedService] = useState(null)
+  const [reserveTime, setReserveTime] = useState(new Date().toTimeString("fa-ir"))
+  const [reserveDate, setReserveDate] = useState(new Date().toDateString("fa-ir"))
+  const [reservedAt, setReservedAt] = useState(jalaali(new Date()))
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  useEffect(() => {
+    async function fetchServiceWorkers() {
+      const response = await axios.get("/operator")
+      setServiceWorkers(response.data.data)
+    }
+
+    async function fetchServices() {
+      const response = await axios.get("/service")
+      setServices(response.data)
+    }
+
+    fetchServiceWorkers()
+    fetchServices()
+  }, [])
+
+  const handleSubmit = async event => {
     event.preventDefault()
-    // Add your logic here to save the reserve item
-    onClose()
+    const requestBody = {
+      service_worker_id: selectedServiceWorker.value,
+      service_id: selectedService.value,
+      reserved_at: new Date(reservedAt).toLocaleString(),
+    }
+
+    console.log(requestBody)
+    try {
+      await axios.post("/reserve", requestBody)
+      onClose()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -36,61 +70,50 @@ export const AddReserve = () => {
       <Button onClick={onOpen}>افزودن</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent borderRadius={12}>
-          <ModalHeader>افزودن رزرو</ModalHeader>
+        <ModalContent>
+          <ModalHeader>ایجاد رزرو جدید</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit}>
             <ModalBody>
               <FormControl>
-                <FormLabel>نام</FormLabel>
-                <Input type="text" value={name} onChange={event => setName(event.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>نام مشتری</FormLabel>
-                <Input
-                  type="text"
-                  value={clientName}
-                  onChange={event => setClientName(event.target.value)}
+                <FormLabel>متخصص</FormLabel>
+                <Select
+                  options={serviceWorkers.map(serviceWorker => ({
+                    value: serviceWorker.id,
+                    label: `${serviceWorker.first_name} ${serviceWorker.last_name}`,
+                  }))}
+                  value={selectedServiceWorker}
+                  onChange={selectedOption => setSelectedServiceWorker(selectedOption)}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel>نام اپراتور</FormLabel>
-                <Input
-                  type="text"
-                  value={operatorName}
-                  onChange={event => setOperatorName(event.target.value)}
+
+              <FormControl mt={4}>
+                <FormLabel>سرویس</FormLabel>
+                <Select
+                  options={services.map(service => ({
+                    value: service.id,
+                    label: service.name,
+                  }))}
+                  value={selectedService}
+                  onChange={selectedOption => setSelectedService(selectedOption)}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel>تاریخ</FormLabel>
-                <Input type="text" value={date} onChange={event => setDate(event.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>زمان</FormLabel>
-                <Input type="text" value={time} onChange={event => setTime(event.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>مدت زمان</FormLabel>
-                <Input
-                  type="text"
-                  value={timeCost}
-                  onChange={event => setTimeCost(event.target.value)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>هزینه مالی</FormLabel>
-                <Input
-                  type="text"
-                  value={moneyCost}
-                  onChange={event => setMoneyCost(event.target.value)}
+
+              <FormControl mt={4} id="date-time-picker">
+                <FormLabel>روز</FormLabel>
+                <DatePicker
+                  value={reservedAt}
+                  isGregorian={false}
+                  onChange={val => setReservedAt(val)}
                 />
               </FormControl>
             </ModalBody>
-            <ModalFooter as={HStack} spacing={2}>
+
+            <ModalFooter>
               <Button colorScheme="blue" mr={3} type="submit">
                 ذخیره
               </Button>
-              <Button colorScheme="red" variant="ghost" onClick={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 لغو
               </Button>
             </ModalFooter>
@@ -100,3 +123,34 @@ export const AddReserve = () => {
     </>
   )
 }
+
+/* <FormControl mt={4} id="date-time-picker">
+<FormLabel>ساعت</FormLabel>
+<Input
+  type="time"
+  value={reserveTime}
+  onChange={e => setReserveTime(e.target.value)}
+/>
+</FormControl>
+
+<FormControl mt={4} id="date-time-picker">
+<FormLabel>روز</FormLabel>
+<Calendar
+  value={reservedAt}
+  isGregorian={false}
+  onChange={val => setReservedAt(val)}
+/>
+</FormControl> */
+
+/*
+              <FormControl mt={4} id="date-time-picker">
+                <FormLabel>روز</FormLabel>
+                <Input
+                  type="date"
+                  value={reserveDate}
+                  onChange={e => setReserveDate(e.target.value)}
+                />
+              </FormControl>
+
+
+*/

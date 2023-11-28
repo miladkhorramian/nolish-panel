@@ -60,15 +60,6 @@ const Navbar = () => {
         transition="all .3s ease-in"
       >
         <HStack spacing={4}>
-          {/* Menu Button */}
-          <IconButton
-            icon={<CiMenuBurger />}
-            color="white"
-            variant="ghost"
-            _hover={{ background: "pink.400" }}
-            _active={{ background: "pink.400" }}
-            onClick={onToggle}
-          />
           {/* Links */}
           <ChakraLink as={NextLink} href="/" textDecoration="none" _hover={{ color: "pink.200" }}>
             خانه
@@ -80,12 +71,6 @@ const Navbar = () => {
             _hover={{ color: "pink.200" }}
           >
             خدمات
-          </ChakraLink>
-          <ChakraLink as={NextLink} href="#" textDecoration="none" _hover={{ color: "pink.200" }}>
-            لیست متخصصان
-          </ChakraLink>
-          <ChakraLink as={NextLink} href="#" textDecoration="none" _hover={{ color: "pink.200" }}>
-            درباره ما
           </ChakraLink>
         </HStack>
         <UserMenu

@@ -14,6 +14,8 @@ import {
   InputGroup,
   InputRightElement,
   Link,
+  Text,
+  HStack,
   useToast,
 } from "@chakra-ui/react"
 
@@ -37,6 +39,7 @@ export default function () {
     e.preventDefault()
 
     const data = { email, password }
+    console.log(data)
     login(data)
   }
 
@@ -87,7 +90,7 @@ export default function () {
                       </InputRightElement>
                     </InputGroup>
                     {!isError && <FormErrorMessage>رمز ورود وارد نشده است</FormErrorMessage>}
-                    <Link
+                    {/* <Link
                       href="#"
                       fontSize="sm"
                       color="facebook.500"
@@ -96,12 +99,25 @@ export default function () {
                       mt={2}
                     >
                       فراموشی رمز
-                    </Link>
+                    </Link> */}
                   </FormControl>
                   <Button type="submit" w="full" colorScheme="purple">
                     ورود
                   </Button>
                 </form>
+                <HStack mt={4} justifyContent="center" h="full">
+                  <Text>حساب ندارید؟</Text>
+                  <Link
+                    href="/user/register"
+                    fontSize="sm"
+                    color="facebook.500"
+                    noOfLines={1}
+                    textAlign="center"
+                    display="inline"
+                  >
+                    ثبت نام کنید
+                  </Link>
+                </HStack>
               </Card>
             </Grid>
             <Box

@@ -77,7 +77,9 @@ const Profile = () => {
     // event.preventDefault()
 
     const formData = new FormData()
+    console.log(image)
     formData.append("photo", image)
+    console.log(formData.get("photo"))
 
     try {
       await axios.post("/user/profile/picture", formData, {
@@ -109,7 +111,7 @@ const Profile = () => {
   }, [data])
 
   useEffect(() => {
-    uploadPicture()
+    if (image) uploadPicture()
   }, [image])
 
   return (

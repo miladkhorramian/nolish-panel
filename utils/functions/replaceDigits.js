@@ -4,6 +4,7 @@ const englishMap = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 const persianMap = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
 
 export const replaceWithPersian = num => {
+  if (!num) return
   let str = typeof num === "number" ? String(num) : num
   for (var i = 0; i < 10; i++) {
     str = str.replace(englishDigits[i], persianMap[i])
@@ -12,6 +13,7 @@ export const replaceWithPersian = num => {
 }
 
 export const replaceWithEnglish = num => {
+  if (!num) return
   let str = typeof num === "number" ? String(num) : num
   for (var i = 0; i < 10; i++) {
     str = str.replace(persianDigits[i], englishMap[i])

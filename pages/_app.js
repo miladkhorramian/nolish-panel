@@ -8,22 +8,22 @@ import { getCookie } from "cookies-next"
 
 import "@/styles/globals.css"
 
-import { Box } from "@chakra-ui/react"
-
 import Navbar from "@/components/common/Navbar"
-import { useEffect } from "react"
 
-const specialRoutes = ["/user/login", "/user/register", "/admin"]
+const specialRoutes = ["/user/login", "/user/register"]
 
 export default function App({ Component, pageProps }) {
   const { pathname, push } = useRouter()
+  const router = useRouter()
 
-  if (specialRoutes.includes(pathname))
+  if (specialRoutes.includes(pathname) || pathname.startsWith("/admin"))
     return (
-      <ChakraProvider theme={theme}>
-        <Fonts />
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <ReduxProvider store={store}>
+        <ChakraProvider theme={theme}>
+          <Fonts />
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </ReduxProvider>
     )
 
   return (

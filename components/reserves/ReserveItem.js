@@ -1,26 +1,13 @@
-import {
-  Grid,
-  GridItem,
-  IconButton,
-  Heading,
-  Card,
-  Text,
-  useToast,
-} from "@chakra-ui/react"
+import { useState } from "react"
+import { Grid, GridItem, IconButton, Heading, Card, Text, useToast } from "@chakra-ui/react"
 import { CiTrash } from "react-icons/ci"
+import { replaceWithPersian } from "@/utils/functions/replaceDigits"
+import { axios } from "@/app/axios"
 
 const gridder = "20% 20% 20% 10% 10% 10% 9% 1%"
 
 export const ReserveHeaders = () => (
-  <Grid
-    templateColumns={gridder}
-    mx={6}
-    my={4}
-    color="gray.500"
-    w="full"
-    overflowX="auto"
-    overflowY="hidden"
-  >
+  <Grid templateColumns={gridder} px={6} py={4} w="full" mb={2}>
     <GridItem as={Grid} placeItems="center right">
       <Heading size="sm">نام سرویس</Heading>
     </GridItem>
@@ -46,7 +33,7 @@ export const ReserveHeaders = () => (
   </Grid>
 )
 
-export const ReserveItem = ({ reserve }) => {
+export const ReserveItem = ({ reserve, updater = () => {} }) => {
   const [showExtraMenu, setShowExtraMenu] = useState(false)
 
   const toast = useToast()
@@ -54,6 +41,7 @@ export const ReserveItem = ({ reserve }) => {
   const onDelete = async () => {
     try {
       await axios.delete(`/reserve/${reserve.id}`)
+      updater()
     } catch (error) {
       toast({
         description: "خطا در حذف رزرو",
@@ -79,32 +67,32 @@ export const ReserveItem = ({ reserve }) => {
         onMouseLeave={() => setShowExtraMenu(false)}
       >
         <GridItem as={Grid} placeItems="center start">
-          <Text fontSize="sm">{reserve.service.name}</Text>
+          <Text fontSize="sm">{reserve?.service?.name}</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">
-            {reserve.customer.first_name} {reserve.customer.last_name}
+            {reserve?.customer?.first_name} {reserve?.customer?.last_name}
           </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">ملیحه</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{new Date(reserve.reserved_at).toLocaleDateString("fa-ir")}</Text>
+          <Text fontSize="sm">{new Date(reserve?.reserved_at).toLocaleDateString("fa-ir")}</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">
-            {new Date(reserve.reserved_at).toLocaleTimeString("fa-ir", {
+            {new Date(reserve?.reserved_at).toLocaleTimeString("fa-ir", {
               hour: "2-digit",
               minute: "2-digit",
             })}
           </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{reserve.service.time_cost} دقیقه</Text>
+          <Text fontSize="sm">{reserve?.service?.time_cost} دقیقه</Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{replaceWithPersian(reserve.service.money_cost)}</Text>
+          <Text fontSize="sm">{reserve?.service?.money_cost}</Text>
         </GridItem>
         <GridItem placeItems="center">
           <IconButton

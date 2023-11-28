@@ -22,6 +22,8 @@ import {
   InputGroup,
   InputRightElement,
   Link,
+  Text,
+  HStack,
   useToast,
 } from "@chakra-ui/react"
 
@@ -29,6 +31,7 @@ import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons"
 import { CiUnread, CiRead } from "react-icons/ci"
 
 import { axios } from "@/app/axios"
+import login from "@/utils/functions/login"
 
 // eslint-disable-next-line react/display-name,import/no-anonymous-default-export
 export default function () {
@@ -63,19 +66,9 @@ export default function () {
       }
       const response = await axios.post("/auth/register", data)
 
-      if (response.status === 201) login()
+      if (response.status === 201) login({ email, password })
 
       console.log(response)
-    }
-  }
-
-  const login = async () => {
-    const data = { email, password }
-    const response = await axios.post("/auth/login", data)
-
-    if (response.status === 200) {
-      setCookie("token", response.data.plainTextToken)
-      router.push("/")
     }
   }
 
@@ -186,6 +179,19 @@ export default function () {
                     ورود
                   </Button>
                 </form>
+                <HStack mt={4} justifyContent="center" h="full">
+                  <Text>حساب دارید؟</Text>
+                  <Link
+                    href="/user/login"
+                    fontSize="sm"
+                    color="facebook.500"
+                    noOfLines={1}
+                    textAlign="center"
+                    display="inline"
+                  >
+                    وارد شوید.
+                  </Link>
+                </HStack>
               </Card>
             </Grid>
           </Grid>

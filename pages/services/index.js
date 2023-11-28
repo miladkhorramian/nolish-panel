@@ -2,12 +2,10 @@ import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import Container from "@/components/common/Container"
 import { Heading, HStack, Flex, Spacer } from "@chakra-ui/react"
-
-import { getServices } from "@/features/services/serviceSlice"
-
 import { Samples } from "@/components/services/Samples"
 import { ServiceItem } from "@/components/services/ServiceItem"
-import { AddService } from "@/components/services/AddService"
+
+import { getServices } from "@/features/services/serviceSlice"
 
 const Services = () => {
   const dispatch = useDispatch()
@@ -24,7 +22,6 @@ const Services = () => {
           لیست خدمات‌
         </Heading>
         <Spacer />
-        <AddService />
       </Flex>
       <HStack overflow="auto" spacing={2} pb={4}>
         {services.map(service => (
