@@ -62,6 +62,7 @@ export default function ServiceDetail() {
 
       await axios.put(`/service/${id}`, data)
       fetchData()
+      enableEditting(false)
     } catch (error) {
       const { message, response } = error
       console.log(response)

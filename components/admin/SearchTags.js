@@ -24,7 +24,9 @@ export const SearchTags = () => {
 
   return (
     <>
-      <Heading size="md">جستجو</Heading>
+      <Heading size="md" mb={4}>
+        جستجو
+      </Heading>
       <VStack>
         <Input
           placeholder="کلمه مورد نظر خود را تایپ نمایید..."
@@ -33,7 +35,7 @@ export const SearchTags = () => {
         />
         <Button onClick={searchImages}>جستجو</Button>
       </VStack>
-      <Flex wrap="wrap">
+      <Flex wrap="wrap" my={4}>
         {images.map(image => (
           <Image
             key={image.id}

@@ -75,7 +75,9 @@ export const ReserveItem = ({ reserve, updater = () => {} }) => {
           </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">ملیحه</Text>
+          <Text fontSize="sm">
+            {reserve?.operator?.first_name} {reserve?.operator?.last_name}
+          </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">{new Date(reserve?.reserved_at).toLocaleDateString("fa-ir")}</Text>

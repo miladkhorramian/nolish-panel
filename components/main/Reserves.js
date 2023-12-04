@@ -9,8 +9,6 @@ import {
   Card,
   HStack,
   Text,
-  Button,
-  Box,
   Center,
 } from "@chakra-ui/react"
 import { CiMenuKebab } from "react-icons/ci"
@@ -19,41 +17,10 @@ import { CiCircleChevDown } from "react-icons/ci"
 import Container from "../common/Container"
 import AbsoluteExtrasOverlay from "@/components/common/AbsoluteExtrasOverlay"
 
-import { replaceWithPersian } from "@/utils/functions/replaceDigits"
-import { axios } from "@/app/axios"
 import { getReserves } from "@/features/reserve/reserveSlice"
 import { useRouter } from "next/router"
 
 const gridder = "20% 20% 20% 10% 10% 10% 9% 1%"
-const res = {
-  id: 1,
-  customer_id: 2,
-  service_id: 1,
-  reserved_at: "2023-09-26 15:06:58",
-  created_at: "2023-11-21T16:13:45.000000Z",
-  updated_at: "2023-11-21T16:13:45.000000Z",
-  deleted_at: null,
-  customer: {
-    id: 2,
-    first_name: "Murl",
-    last_name: "Collier",
-    email: "tyson.wolf@example.com",
-    email_verified_at: "2023-11-21T16:13:44.000000Z",
-    role: "customer",
-    created_at: "2023-11-21T16:13:44.000000Z",
-    updated_at: "2023-11-21T16:13:44.000000Z",
-    deleted_at: null,
-  },
-  service: {
-    id: 1,
-    name: "Jarred Walk",
-    money_cost: 4543247,
-    time_cost: 96,
-    created_at: "2023-11-21T16:13:45.000000Z",
-    updated_at: "2023-11-21T16:13:45.000000Z",
-    deleted_at: null,
-  },
-}
 
 const ReserveHeaders = () => (
   <Grid
