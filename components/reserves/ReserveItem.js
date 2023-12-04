@@ -71,7 +71,9 @@ export const ReserveItem = ({ reserve, updater = () => {} }) => {
         </GridItem>
         <GridItem as={Grid} placeItems="center">
           <Text fontSize="sm">
-            {reserve?.customer?.first_name} {reserve?.customer?.last_name}
+            {reserve.customer
+              ? `${reserve?.customer?.first_name} ${reserve?.customer?.last_name}`
+              : "خودم"}
           </Text>
         </GridItem>
         <GridItem as={Grid} placeItems="center">

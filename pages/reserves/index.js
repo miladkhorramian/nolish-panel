@@ -24,7 +24,7 @@ export default function Reserves() {
             لیست رزروها
           </Heading>
           <Spacer />
-          <AddReserve />
+          <AddReserve updater={() => dispatch(getReserves())} />
         </Flex>
       </Container>
       <Container position="relative">
@@ -33,11 +33,7 @@ export default function Reserves() {
           {reserves.map(reserve => (
             <ReserveItem reserve={reserve} />
           ))}
-          {reserves.length === 0 ? (
-            <Text>موردی برای نمایش وجود ندارد.</Text>
-          ) : (
-            <AbsoluteExtrasOverlay />
-          )}
+          {reserves.length === 0 ? <Text>موردی برای نمایش وجود ندارد.</Text> : null}
         </VStack>
       </Container>
     </>

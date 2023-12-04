@@ -20,7 +20,7 @@ import { Calendar } from "react-datepicker2"
 
 import jalaali from "moment-jalaali"
 
-export const AddReserve = () => {
+export const AddReserve = ({ updater = () => {} }) => {
   const date = new Date()
 
   const [serviceWorkers, setServiceWorkers] = useState([])
@@ -50,20 +50,36 @@ export const AddReserve = () => {
 
   const handleSubmit = async event => {
     event.preventDefault()
+    const str = new Date(reservedAt).toLocaleDateString("en-us").split("/")
+    const date = str[2] + "-" + str[1] + "-" + str[0]
+
+    console.log(date)
+
+    const reserved_at =
+      date + " " + new Date(reservedAt).toLocaleTimeString("en-us", { hour12: false })
+
     const requestBody = {
       service_worker_id: selectedServiceWorker.value,
       service_id: selectedService.value,
-      reserved_at: new Date(reservedAt).toLocaleString(),
+      reserved_at: reserved_at,
     }
 
-    console.log(requestBody)
     try {
       await axios.post("/reserve", requestBody)
+      updater()
       onClose()
     } catch (error) {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    console.log(
+      new Date(reservedAt).toLocaleDateString("en-us"),
+      new Date(reservedAt).toLocaleTimeString("en-us", { hour12: false }),
+      // new Date(reservedAt).toLocaleString("en-us", { hour12: false }),
+    )
+  }, [reservedAt])
 
   return (
     <>

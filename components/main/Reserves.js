@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react"
 import { CiMenuKebab } from "react-icons/ci"
 import { CiCircleChevDown } from "react-icons/ci"
-
+import { ReserveItem } from "../reserves/ReserveItem"
 import Container from "../common/Container"
 import AbsoluteExtrasOverlay from "@/components/common/AbsoluteExtrasOverlay"
 
@@ -57,67 +57,6 @@ const ReserveHeaders = () => (
   </Grid>
 )
 
-const ReserveItem = ({ data }) => {
-  const [showExtraMenu, setShowExtraMenu] = useState(false)
-
-  return (
-    <>
-      <Grid
-        templateColumns={gridder}
-        as={Card}
-        px={6}
-        py={4}
-        w="full"
-        bg="red.50"
-        mb={2}
-        color="gray.600"
-        onMouseEnter={() => setShowExtraMenu(true)}
-        onMouseLeave={() => setShowExtraMenu(false)}
-      >
-        <GridItem as={Grid} placeItems="center start">
-          <Text fontSize="sm">{data?.service?.name}</Text>
-        </GridItem>
-        <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">
-            {data?.customer?.first_name} {data?.customer?.last_name}
-          </Text>
-        </GridItem>
-        <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">ملیحه</Text>
-        </GridItem>
-        <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{new Date(data?.reserved_at).toLocaleDateString("fa-ir")}</Text>
-        </GridItem>
-        <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">
-            {new Date(data?.reserved_at).toLocaleTimeString("fa-ir", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </Text>
-        </GridItem>
-        <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{data?.service?.time_cost} دقیقه</Text>
-        </GridItem>
-        <GridItem as={Grid} placeItems="center">
-          <Text fontSize="sm">{data?.service?.money_cost}</Text>
-        </GridItem>
-        <GridItem placeItems="center">
-          <IconButton
-            icon={<CiMenuKebab />}
-            variant="unstyled"
-            p={0}
-            minW="15px"
-            mr={2}
-            opacity={showExtraMenu ? 1 : 0}
-            transition="all .3s ease-in-out"
-          />
-        </GridItem>
-      </Grid>
-    </>
-  )
-}
-
 const Reserves = () => {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -140,7 +79,7 @@ const Reserves = () => {
       <Container as={VStack} position="relative" w="auto" overflowX="auto" mb={4}>
         <VStack w="full">
           <ReserveHeaders />
-          {reserves.map((reserve, index) => index <= 2 && <ReserveItem data={reserve} />)}
+          {reserves.map((reserve, index) => index <= 2 && <ReserveItem reserve={reserve} />)}
         </VStack>
         <AbsoluteExtrasOverlay />
       </Container>
