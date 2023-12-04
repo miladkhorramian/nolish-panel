@@ -51,9 +51,7 @@ export const AddReserve = ({ updater = () => {} }) => {
   const handleSubmit = async event => {
     event.preventDefault()
     const str = new Date(reservedAt).toLocaleDateString("en-us").split("/")
-    const date = str[2] + "-" + str[1] + "-" + str[0]
-
-    console.log(date)
+    const date = str[2] + "-" + str[0] + "-" + str[1]
 
     const reserved_at =
       date + " " + new Date(reservedAt).toLocaleTimeString("en-us", { hour12: false })
