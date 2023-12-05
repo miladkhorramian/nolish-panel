@@ -65,11 +65,12 @@ const Profile = () => {
     if (lastName !== data.last_name) d.last_name = lastName
     if (newPassword === confirmPassword && newPassword !== oldPassword) d.password = newPassword
     try {
-      const response = await axios.post("/user/update")
-
+      await axios.put("/user/update")
       dispatch(getUserData())
     } catch (error) {
-      console.log(error.response)
+      const { response, message } = error
+      console.log(message)
+      console.log(response)
     }
   }
 

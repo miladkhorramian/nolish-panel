@@ -13,6 +13,7 @@ import {
   Button,
   useDisclosure,
   Input,
+  useToast,
 } from "@chakra-ui/react"
 import DatePicker from "react-datepicker2"
 import Select from "react-select"
@@ -32,6 +33,7 @@ export const AddReserve = ({ updater = () => {} }) => {
   const [reservedAt, setReservedAt] = useState(jalaali(new Date()))
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
 
   useEffect(() => {
     async function fetchServiceWorkers() {
@@ -67,7 +69,15 @@ export const AddReserve = ({ updater = () => {} }) => {
       updater()
       onClose()
     } catch (error) {
-      console.error(error)
+      const { response, message } = error
+      console.log(1)
+      toast({
+        description: response.data.message,
+        status: "error",
+        position: "top",
+      })
+      console.log(message)
+      console.log(response)
     }
   }
 
